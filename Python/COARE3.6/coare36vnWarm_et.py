@@ -327,7 +327,7 @@ def coare36vnWarm_et(Jd=None, U=None, Zu=None, Tair=None, Zt=None, RH=None,
     #end of data line loop 
     
     # get rid of filled values where nans are present in input data
-    bad_input = np.where(np.isnan(sw_dn) == 1)
+    bad_input = np.where(np.isnan(SW_dn))
     # disp(['bad solar values = ' sprintf('#i',length(bad_input))]);
     warm_output[bad_input,:] = np.nan
     
@@ -410,7 +410,7 @@ if __name__ == '__main__':
     # import util
     # import matplotlib.pyplot as plt
     
-    path = '/Users/ludo/Documents/Work/COARE/conversion2python_tests/'
+    path = './'
     fil = 'test_36_data.txt'   
     data = np.genfromtxt(path+fil, skip_header=1)
     U = data[:,1]
@@ -438,9 +438,9 @@ if __name__ == '__main__':
     Ts_depth = data[:,19]
   
     # A=coare36vnWarm_et(Jd, U, Zu, Tair, Zt, RH, Zq, P, Tsg, SW_dn, LW_dn, Lat, Lon, Zi, Rainrate, Ts_depth, Ss, cp = None, sigH = None, zrf_u, zrf_t, zrf_q)
-    fnameA = os.path.join(path,'test_36_output_py_082022_withwavesinput_withwarmlayer.txt')
+    # fnameA = os.path.join(path,'test_36_output_py_082022_withwavesinput_withwarmlayer.compare_me.txt')
     A=coare36vnWarm_et(Jd, U, Zu, Tair, Zt, RH, Zq, P, Tsg, SW_dn, LW_dn, Lat, Lon, Zi, Rainrate, Ts_depth, Ss, None, None, zrf_u, zrf_t, zrf_q)
-    fnameA = os.path.join(path,'test_36_output_py_082022_withnowavesinput_withwarmlayer.txt')
+    fnameA = os.path.join(path,'test_36_output_py_082022_withnowavesinput_withwarmlayer.compare_me.txt')
     A_hdr = 'usr\ttau\thsb\thlb\thbb\thlwebb\ttsr\tqsr\tzo\tzot\tzoq\tCd\t'
     A_hdr += 'Ch\tCe\tL\tzeta\tdT_skinx\tdq_skinx\tdz_skin\tUrf\tTrf\tQrf\t'
     A_hdr += 'RHrf\tUrfN\tTrfN\tQrfN\tlw_net\tsw_net\tLe\trhoa\tUN\tU10\tU10N\t'
