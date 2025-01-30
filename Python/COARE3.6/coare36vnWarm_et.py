@@ -17,11 +17,21 @@ v1: September 2022
 """
 
 import numpy as np
+import pandas as pd
 import coare36vn_zrf_et as c36
 import os
 
-def coare36vnWarm_et(Jd, U, Zu, Tair, Zt, RH, Zq, P, Tsea, SW_dn, LW_dn, Lat, Lon, Zi, Rainrate, Ts_depth, Ss, cp=None, sigH=None,zrf_u = 10.0,zrf_t = 10.0,zrf_q = 10.0): 
+def coare36vnWarm_et(Jd=None, U=None, Zu=None, Tair=None, Zt=None, RH=None,
+    Zq=None, P=None, Tsea=None, SW_dn=None, LW_dn=None, Lat=None, Lon=None,
+    Zi=None, Rainrate=None, Ts_depth=None, Ss=None, cp=None, sigH=None,
+    zrf_u=10.0, zrf_t=10.0, zrf_q=10.0, df=None): 
+    
     print('WarmCoolLayer')
+
+# BK modified the code to accept a dataframe as inputs (df) rather than
+# entering the variables as individual arrays. The dataframe needs to have
+# keys (column names) named the same as the input variables.
+
 #***********   input data **************
 #       Jd = day-of-year or julian day
 #	    U = wind speed magnitude (m/s) corrected for currents, i.e. relative to water at height zu

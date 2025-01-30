@@ -23,9 +23,13 @@ ludovic Bariteau, CU/CIRES, NOAA/ESRL/PSL
 v1: August 2022
 """
 import numpy as np
+import pandas as pd
 import os
     
-def coare36vn_zrf_et(u, zu , t, zt, rh, zq, P, ts, sw_dn, lw_dn, lat, lon,jd, zi,rain, Ss, cp=None, sigH=None, zrf_u=10.0, zrf_t=10.0, zrf_q=10.0):   
+def coare36vn_zrf_et(u=None, zu=None, t=None, zt=None, rh=None, zq=None,
+    P=None, ts=None, sw_dn=None, lw_dn=None, lat=None, lon=None,jd=None,
+    zi=None, rain=None, Ss=None, cp=None, sigH=None,
+    zrf_u=10.0, zrf_t=10.0, zrf_q=10.0, df=None):   
 #**************************************************************************
 # VERSION INFO:
     
@@ -41,6 +45,9 @@ def coare36vn_zrf_et(u, zu , t, zt, rh, zq, P, ts, sw_dn, lw_dn, lat, lon,jd, zi
 # database.  This version also allows salinity as a input.
 # Open ocean example Ss=35; Great Lakes Ss=0;
     
+# BK modified the code to accept a dataframe as inputs (df) rather than
+# entering the variables as individual arrays. The dataframe needs to have
+# keys (column names) named the same as the input variables.
 #**************************************************************************
 # COOL SKIN:
     
