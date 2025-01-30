@@ -498,10 +498,10 @@ def coare36vn_zrf_et(u=None, zu=None, t=None, zt=None, rh=None, zq=None,
         ik = np.array(np.where(rr[iice] <= 0.135))
         rt[iice[ik]] = rr[iice[ik]] * np.exp(1.25)
         rq[iice[ik]] = rr[iice[ik]] * np.exp(1.61)
-        ik = np.array(np.where(rr[iice] > np.logical_and(0.135,rr[iice]) <= 2.5))
+        ik = np.array(np.where((rr[iice] > 0.135) & (rr[iice] <= 2.5)))
         rt[iice[ik]] = np.multiply(rr[iice[ik]],np.exp(0.149 - 0.55 * np.log(rr[iice[ik]])))
         rq[iice[ik]] = np.multiply(rr[iice[ik]],np.exp(0.351 - 0.628 * np.log(rr[iice[ik]])))
-        ik = np.array(np.where(rr[iice] > np.logical_and(2.5,rr[iice]) <= 1000))
+        ik = np.array(np.where((rr[iice] > 2.5) & (rr[iice] <= 1000.0)))
         rt[iice[ik]] = np.multiply(rr[iice[ik]],np.exp(0.317 - 0.565 * np.log(rr[iice[ik]]) - np.multiply(0.183 * np.log(rr[iice[ik]]),np.log(rr[iice[ik]]))))
         rq[iice[ik]] = np.multiply(rr[iice[ik]],np.exp(0.396 - 0.512 * np.log(rr[iice[ik]]) - np.multiply(0.18 * np.log(rr[iice[ik]]),np.log(rr[iice[ik]]))))
         # Dalton number is close to COARE 3.0 value
@@ -963,7 +963,7 @@ if __name__ == '__main__':
     # import util
     # import matplotlib.pyplot as plt
     
-    path = '/Users/ludo/Documents/Work/COARE/conversion2python_tests/'
+    path = './'
     fil = 'test_36_data.txt'   
     data = np.genfromtxt(path+fil, skip_header=1)
     u = data[:,1]
@@ -989,9 +989,9 @@ if __name__ == '__main__':
     sigH = data[:,17]
     
     A=coare36vn_zrf_et(u, zu , t, zt, rh, zq, P, ts, sw_dn, lw_dn, lat, lon,jd, zi,rain, Ss, cp , sigH, zrf_u, zrf_t, zrf_q)
-    fnameA = os.path.join(path,'test_36_output_py_082022_withwavesinput.txt')
+    fnameA = os.path.join(path,'test_36_output_py_082022_withwavesinput.compare_me.txt')
     # A=coare36vn_zrf_et(u, zu , t, zt, rh, zq, P, ts, sw_dn, lw_dn, lat, lon,jd, zi,rain, Ss, None , None, zrf_u, zrf_t, zrf_q)
-    # fnameA = os.path.join(path,'test_36_output_py_082022_withnowavesinput.txt')
+    # fnameA = os.path.join(path,'test_36_output_py_082022_withnowavesinput.compare_me.txt')
     A_hdr = 'usr\ttau\thsb\thlb\thbb\thlwebb\ttsr\tqsr\tzo\tzot\tzoq\tCd\t'
     A_hdr += 'Ch\tCe\tL\tzeta\tdT_skinx\tdq_skinx\tdz_skin\tUrf\tTrf\tQrf\t'
     A_hdr += 'RHrf\tUrfN\tTrfN\tQrfN\tlw_net\tsw_net\tLe\trhoa\tUN\tU10\tU10N\t'
