@@ -243,11 +243,58 @@ def coare36vn_zrf_et(u=None, zu=None, t=None, zt=None, rh=None, zq=None,
 ### Make sure INPUTS are consistent in size. 
 # Best to avoid NaNs as inputs as well. Will prevent weird results
 
+    # If a Pandas DataFrame is used, separate out the variables.
+    # Values passed as separate arrays will override
+    # the values in the DataFrame.
+    if isinstance(df, pd.DataFrame):
+        if u is None and 'u' in df.keys():
+            u = df['u'].values
+        if zu is None and 'zu' in df.keys():
+            zu = df['zu'].values
+        if t is None and 't' in df.keys():
+            t = df['t'].values
+        if zt is None and 'zt' in df.keys():
+            zt = df['zt'].values
+        if rh is None and 'rh' in df.keys():
+            rh = df['rh'].values
+        if zq is None and 'zq' in df.keys():
+            zq = df['zq'].values
+        if P is None and 'P' in df.keys():
+            P = df['P'].values
+        if ts is None and 'ts' in df.keys():
+            ts = df['ts'].values
+        if sw_dn is None and 'sw_dn' in df.keys():
+            sw_dn = df['sw_dn'].values
+        if lw_dn is None and 'lw_dn' in df.keys():
+            lw_dn = df['lw_dn'].values
+        if lat is None and 'lat' in df.keys():
+            lat = df['lat'].values
+        if lon is None and 'lon' in df.keys():
+            lon = df['lon'].values
+        if jd is None and 'jd' in df.keys():
+            jd = df['jd'].values
+        if zi is None and 'zi' in df.keys():
+            zi = df['zi'].values
+        if rain is None and 'rain' in df.keys():
+            rain = df['rain'].values
+        if Ss is None and 'Ss' in df.keys():
+            Ss = df['Ss'].values
+        if cp is None and 'cp' in df.keys():
+            cp = df['cp'].values
+        if sigH is None and 'sigH' in df.keys():
+            sigH = df['sigH'].values
+        if zrf_u is None and 'zrf_u' in df.keys():
+            zrf_u = df['zrf_u'].values
+        if zrf_t is None and 'zrf_t' in df.keys():
+            zrf_t = df['zrf_t'].values
+        if zrf_q is None and 'zrf_q' in df.keys():
+            zrf_q = df['zrf_q'].values
+
     # be sure array inputs are ndarray floats for single value function
     # if inputs are already ndarray float this does nothing
     # otherwise copies are created in the local namespace
     # .flatten() return a 1D version in case single value input is already an array (array([[]]) vs array([]))
-    if u.size ==1 and t.size ==1: 
+    if u.size ==1 and t.size ==1:
         u = np.copy(np.asarray([u], dtype=float)).flatten()
         zu = np.copy(np.asarray([zu], dtype=float)).flatten()
         t = np.copy(np.asarray([t], dtype=float)).flatten()
@@ -987,8 +1034,18 @@ if __name__ == '__main__':
     jd = data[:,0]
     cp = data[:,16]
     sigH = data[:,17]
-    
-    A=coare36vn_zrf_et(u, zu , t, zt, rh, zq, P, ts, sw_dn, lw_dn, lat, lon,jd, zi,rain, Ss, cp , sigH, zrf_u, zrf_t, zrf_q)
+
+    # Test using array input.    
+    A=coare36vn_zrf_et(u, zu , t, zt, rh, zq, P, ts, sw_dn, lw_dn,
+        lat, lon,jd, zi,rain, Ss, cp , sigH, zrf_u, zrf_t, zrf_q)
+
+    # Test using DataFrame input.
+    df = pd.DataFrame({'u':u, 't':t, 'rh':rh, 'P':P, 'ts':ts,
+        'sw_dn':sw_dn, 'lw_dn':lw_dn, 'lat':lat, 'lon':lon, 'zi':zi,
+        'rain':rain, 'zu':zu, 'zt':zt, 'zq':zq, 'Ss':Ss, 'jd':jd, 'cp':cp,
+        'sigH':sigH})
+    A=coare36vn_zrf_et(df=df, zrf_u=10.0, zrf_t=10.0, zrf_q=10.0)
+
     fnameA = os.path.join(path,'test_36_output_py_082022_withwavesinput.compare_me.txt')
     # A=coare36vn_zrf_et(u, zu , t, zt, rh, zq, P, ts, sw_dn, lw_dn, lat, lon,jd, zi,rain, Ss, None , None, zrf_u, zrf_t, zrf_q)
     # fnameA = os.path.join(path,'test_36_output_py_082022_withnowavesinput.compare_me.txt')
